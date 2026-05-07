@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import RocketFlame from './RocketFlame'
+import { ROCKET_ROTATION_X, ROCKET_ROTATION_Y, ROCKET_ROTATION_Z } from '@/lib/scene-config'
 
 export default function Rocket() {
   const outerRef = useRef<THREE.Group>(null)
@@ -11,15 +12,14 @@ export default function Rocket() {
 
   useFrame((state, delta) => {
     if (!outerRef.current || !bodyRef.current) return
+    const d = Math.min(delta, 0.05)
     const t = state.clock.elapsedTime
-    // 외부: 위아래 둥둥만
     outerRef.current.position.y = 0.3 + Math.sin(t * 0.6) * 0.04
-    // 내부 몸통만 Y축 회전
-    bodyRef.current.rotation.y += delta * 0.18
+    bodyRef.current.rotation.y += d * 0.18
   })
 
   return (
-    <group ref={outerRef} position={[0, 0.3, -6]} rotation={[-1.55, 0.4, 0.9]} scale={0.5}>
+    <group ref={outerRef} position={[0, 0.3, -6]} rotation={[ROCKET_ROTATION_X, ROCKET_ROTATION_Y, ROCKET_ROTATION_Z]} scale={0.5}>
       {/* 방향 고정 — 불꽃은 항상 엔진 뒤쪽 */}
       <RocketFlame />
 

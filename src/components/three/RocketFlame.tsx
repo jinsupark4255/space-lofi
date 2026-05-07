@@ -54,11 +54,12 @@ function ExhaustParticles() {
 
   useFrame((_, delta) => {
     if (!ref.current) return
+    const d = Math.min(delta, 0.05)
     const pos = ref.current.geometry.attributes.position.array as Float32Array
     const col = ref.current.geometry.attributes.color.array as Float32Array
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      lifetimes[i] += delta
+      lifetimes[i] += d
 
       if (lifetimes[i] > maxLifetimes[i]) {
         pos[i * 3]     = (Math.random() - 0.5) * 0.16
@@ -69,9 +70,9 @@ function ExhaustParticles() {
         velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.022
         lifetimes[i] = 0
       } else {
-        pos[i * 3]     += velocities[i * 3]
-        pos[i * 3 + 1] += velocities[i * 3 + 1]
-        pos[i * 3 + 2] += velocities[i * 3 + 2]
+        pos[i * 3]     += velocities[i * 3]     * d * 60
+        pos[i * 3 + 1] += velocities[i * 3 + 1] * d * 60
+        pos[i * 3 + 2] += velocities[i * 3 + 2] * d * 60
       }
 
       // 수명 0 → 흰/노랑, 수명 끝 → 주황/빨강 + 투명해짐
