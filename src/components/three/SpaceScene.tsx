@@ -4,6 +4,8 @@ import { Canvas } from '@react-three/fiber'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import Starfield from './Starfield'
 import Rocket from './Rocket'
+import Nebula from './Nebula'
+import Planets from './Planets'
 
 export default function SpaceScene() {
   return (
@@ -23,7 +25,9 @@ export default function SpaceScene() {
         {/* 우주 환경광 */}
         <pointLight position={[0, 10, -10]} intensity={0.4} color="#334488" />
 
+        <Nebula />
         <Starfield />
+        <Planets />
         <Rocket />
 
         <EffectComposer>
