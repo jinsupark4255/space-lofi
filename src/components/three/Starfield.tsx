@@ -34,22 +34,13 @@ export default function Starfield() {
       pos[i * 3 + 1] += dy
       pos[i * 3 + 2] += dz
 
-      const half = SPREAD / 2
-      if (pos[i * 3] > half) {
-        // 오른쪽으로 나감 → 왼쪽에서 재등장
-        pos[i * 3]     = -half
-        pos[i * 3 + 1] = (Math.random() - 0.5) * SPREAD
-        pos[i * 3 + 2] = (Math.random() - 0.5) * SPREAD
-      } else if (pos[i * 3 + 1] < -half) {
-        // 아래로 나감 → 위에서 재등장
-        pos[i * 3]     = (Math.random() - 0.5) * SPREAD
-        pos[i * 3 + 1] = half
-        pos[i * 3 + 2] = (Math.random() - 0.5) * SPREAD
-      } else if (pos[i * 3 + 2] > half) {
-        // 카메라 앞으로 나감 → 뒤에서 재등장
-        pos[i * 3]     = (Math.random() - 0.5) * SPREAD
-        pos[i * 3 + 1] = (Math.random() - 0.5) * SPREAD
-        pos[i * 3 + 2] = -half
+      // 시임리스 타일링 — 경계를 벗어난 축만 반대편으로 이동, 나머지 좌표 유지
+      if (pos[i * 3] > SPREAD / 2) {
+        pos[i * 3] -= SPREAD
+      } else if (pos[i * 3 + 1] < -SPREAD / 2) {
+        pos[i * 3 + 1] += SPREAD
+      } else if (pos[i * 3 + 2] > SPREAD / 2) {
+        pos[i * 3 + 2] -= SPREAD
       }
     }
     ref.current.geometry.attributes.position.needsUpdate = true
